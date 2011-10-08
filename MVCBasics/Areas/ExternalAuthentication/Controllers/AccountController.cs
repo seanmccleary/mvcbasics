@@ -113,7 +113,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 				throw new ExternalLoginException("Couldn't figure out what kind of login we're doing here!");
 
 			}
-			catch (Exception ex)
+			catch (ExternalLoginException ex)
 			{
 				ModelState.AddModelError("Message", ex.Message);
 				return View("LogOn");
@@ -205,7 +205,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 				}
 
 			}
-			catch (Exception e)
+			catch (ExternalLoginException e)
 			{
 				ModelState.AddModelError("Message", e.Message);
 				return View("LogOn");
