@@ -75,8 +75,8 @@
   <ItemGroup>
     <Compile Include="Areas\Analytics\AnalyticsAreaRegistration.cs" />
     <Compile Include="Areas\Analytics\Controllers\AnalyticsController.cs" />
-    <Compile Include="Areas\CDN\CDNAreaRegistration.cs" />
-    <Compile Include="Areas\CDN\Controllers\CDNController.cs" />
+    <Compile Include="Areas\Cdn\CdnAreaRegistration.cs" />
+    <Compile Include="Areas\Cdn\Controllers\CdnController.cs" />
     <Compile Include="Areas\ExternalAuthentication\Controllers\AccountController.cs" />
     <Compile Include="Areas\ExternalAuthentication\ExternalAuthenticationAreaRegistration.cs" />
     <Compile Include="Areas\ExternalAuthentication\Models\ExternalLoginProvider.cs" />
@@ -89,8 +89,8 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Analytics\Models\" />
     <Folder Include="Areas\Analytics\Views\Shared\" />
-    <Folder Include="Areas\CDN\Models\" />
-    <Folder Include="Areas\CDN\Views\Shared\" />
+    <Folder Include="Areas\Cdn\Models\" />
+    <Folder Include="Areas\Cdn\Views\Shared\" />
     <Folder Include="Areas\ExternalAuthentication\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -111,10 +111,10 @@
     <Content Include="Areas\Analytics\Views\Analytics\Include.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\CDN\Views\Web.config" />
+    <Content Include="Areas\Cdn\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\CDN\Views\CDN\Include.cshtml" />
+    <Content Include="Areas\Cdn\Views\CDN\Include.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\ExternalAuthentication\Views\Account\LogOn.cshtml" />

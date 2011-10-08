@@ -1,22 +1,22 @@
 ﻿using System.Web.Mvc;
 
-namespace MVCBasics.Areas.CDN
+namespace MVCBasics.Areas.Cdn
 {
-	public class CDNAreaRegistration : AreaRegistration
+	public class CdnAreaRegistration : AreaRegistration
 	{
 		public override string AreaName
 		{
 			get
 			{
-				return "CDN";
+				return "Cdn";
 			}
 		}
 
 		public override void RegisterArea(AreaRegistrationContext context)
 		{
 			context.MapRoute(
-				"CDN_default",
-				"CDN/{controller}/{action}/{id}",
+				"Cdn_default",
+				"Cdn/{controller}/{action}/{id}",
 				new { action = "Index", id = UrlParameter.Optional }
 			);
 		}

@@ -4,16 +4,16 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MVCBasics.Areas.CDN.Controllers
+namespace MVCBasics.Areas.Cdn.Controllers
 {
-    public class CDNController : Controller
+    public class CdnController : Controller
     {
         //
         // GET: /CDN/CDN/
 		[ChildActionOnly]
         public ActionResult Include()
         {
-			ViewBag.UseMicrosoftCDN =
+			ViewBag.UseMicrosoftCdn =
 				System.Configuration.ConfigurationManager.AppSettings["UseMicrosoftCDN"] != null
 				&& System.Configuration.ConfigurationManager.AppSettings["UseMicrosoftCDN"].ToUpper().Trim() == "TRUE";
 
