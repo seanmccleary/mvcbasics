@@ -34,9 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetOpenAuth, Version=3.4.7.11121, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+    <Reference Include="DotNetOpenAuth, Version=3.2.3.11248, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Downloads\AArnott-dotnetopenid-v3.2.2.9257-150-g9dbb9aa\AArnott-dotnetopenid-9dbb9aa\bin\Release\DotNetOpenAuth.dll</HintPath>
+      <HintPath>..\dependencies\DotNetOpenAuth-Mono\DotNetOpenAuth.dll</HintPath>
     </Reference>
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.5.2.1.0\lib\net40-client\Facebook.dll</HintPath>
@@ -102,13 +102,7 @@
     <Content Include="Areas\ExternalAuthentication\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\ExternalAuthentication\Views\_ViewStart.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Analytics\Views\Web.config" />
