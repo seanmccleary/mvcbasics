@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2011 Sean McCleary
  * 
  * This file is part of MVCBasics.
@@ -32,7 +32,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Services
 		/// <param name="identifier">His OpenID identifier</param>
 		/// <param name="request">The Request object used for this web request</param>
 		/// <param name="returnUrl">The URL the user should be redirected back to</param>
-		/// <param name="realmUrl">The OpenID realm. For www.yoursite.com you may want to set it to "yoursite.com"</param>
+		/// <param name="realmUrl">The OpenID realm. For www.yoursite.com you may want to set it to "http://*.yoursite.com"</param>
 		/// <returns>The URL he needs to visit to log in</returns>
 		string GetOpenIdRedirectUrl(string identifier, string receiveUrl, string returnUrl, string realmUrl);
 
