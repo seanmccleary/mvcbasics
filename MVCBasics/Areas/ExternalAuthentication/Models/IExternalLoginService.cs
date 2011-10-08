@@ -29,8 +29,11 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 		/// </summary>
 		/// <param name="receiveUrl">The URL facebook should send the user back to, to process the response</param>
 		/// <param name="returnUrl">The URL we should return the user to once we're through logging him in</param>
+		/// <param name="appId">The Facebook application ID</param>
+		/// <param name="appSecret">The Facebook application secret</param>
 		/// <returns></returns>
-		string GetFacebookRedirectUrl(string receiveUrl, string returnUrl);
+		string GetFacebookRedirectUrl(string receiveUrl, string returnUrl,
+			 string appId, string appSecret);
 
 		/// <summary>
 		/// Get the Facebook ID of the user from the request we got when ol' Facey sent the
@@ -38,9 +41,12 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 		/// </summary>
 		/// <param name="request">The HTTP request from Facebook. Just pass it in OK?</param>
 		/// <param name="receiveUrl">The URL To which Facebook sent the user back.</param>
+		/// <param name="appId">The Facebook application ID</param>
+		/// <param name="appSecret">The Facebook application secret</param>
 		/// <param name="oauthToken">An OAuthToken object that will be populated</param>
 		/// <returns>The user's Facebook ID.</returns>
 		string GetFacebookId(System.Web.HttpRequest request, string receiveUrl,
+			string appId, string appSecret,
 			out OAuthToken oauthToken);
 
 		/// <summary>

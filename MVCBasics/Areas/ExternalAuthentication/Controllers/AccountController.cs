@@ -65,9 +65,15 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 				// How's about Facebook?
 				else if (Request.Form["provider_type"] == "fb")
 				{
-					return Redirect(_captService.GetFacebookRedirectUrl(
-						Url.Action("ReceiveFacebookResponse", "Account", null, Request.Url.Scheme)
-						, returnUrl));
+					string appId = System.Configuration.ConfigurationManager.AppSettings["FacebookAppId"];
+					string appSecret = System.Configuration.ConfigurationManager.AppSettings["FacebookAppSecret"];
+
+					return Redirect(
+						_captService.GetFacebookRedirectUrl(
+							Url.Action("ReceiveFacebookResponse", "Account", null, Request.Url.Scheme),
+							returnUrl,
+							appId,
+							appSecret));
 				}
 
 				// Twitter, perhaps?
@@ -134,9 +140,13 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 
 					case ExternalLoginProvider.Facebook:
 
+						string appId = System.Configuration.ConfigurationManager.AppSettings["FacebookAppId"];
+						string appSecret = System.Configuration.ConfigurationManager.AppSettings["FacebookAppSecret"];
+
 						userId = _captService.GetFacebookId(
 							System.Web.HttpContext.Current.Request,
 							Url.Action("ReceiveFacebookResponse", "Account", null, Request.Url.Scheme),
+							appId, appSecret,
 							out oauthToken);
 						break;
 

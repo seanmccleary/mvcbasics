@@ -89,9 +89,14 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 		}
 
 		/// <see cref="Capt.Models.IExternalLoginService.GetFacebookRedirectUrl"/>
-		public string GetFacebookRedirectUrl(string receiveUrl, string returnUrl)
+		public string GetFacebookRedirectUrl(string receiveUrl, string returnUrl,
+			string appId, string appSecret)
 		{
+			FacebookApplication app = new FacebookApplication();
 			FacebookOAuthClient FBClient = new FacebookOAuthClient(FacebookApplication.Current);
+
+			FBClient.AppId = appId;
+			FBClient.AppSecret = appSecret;
 
 			string state =
 				"returnUrl=" + returnUrl
@@ -105,7 +110,8 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 		}
 
 		/// <see cref="Capt.Models.IExternalLoginService.GetFacebookId"/>
-		public string GetFacebookId(System.Web.HttpRequest request, string receiveUrl, out OAuthToken oauthToken)
+		public string GetFacebookId(System.Web.HttpRequest request, string receiveUrl, string appId, string appSecret,
+			out OAuthToken oauthToken)
 		{
 			FacebookOAuthResult oauthResult;
 			if (!FacebookOAuthResult.TryParse(request.Url, out oauthResult))
@@ -119,6 +125,8 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 			}
 
 			var oAuthClient = new FacebookOAuthClient(FacebookApplication.Current);
+			oAuthClient.AppId = appId;
+			oAuthClient.AppSecret = appSecret;
 
 			oAuthClient.RedirectUri = new Uri(receiveUrl);
 			dynamic tokenResult = oAuthClient.ExchangeCodeForAccessToken(request["code"]);
@@ -132,6 +140,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 			}
 
 			FacebookClient fbClient = new FacebookClient(accessToken);
+
 			dynamic me = fbClient.Get("me?fields=id");
 
 			oauthToken = new OAuthToken
