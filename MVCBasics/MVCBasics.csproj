@@ -80,8 +80,9 @@
     <Compile Include="Areas\ExternalAuthentication\Controllers\AccountController.cs" />
     <Compile Include="Areas\ExternalAuthentication\ExternalAuthenticationAreaRegistration.cs" />
     <Compile Include="Areas\ExternalAuthentication\Models\ExternalLoginProvider.cs" />
-    <Compile Include="Areas\ExternalAuthentication\Models\ExternalLoginService.cs" />
-    <Compile Include="Areas\ExternalAuthentication\Models\IExternalLoginService.cs" />
+    <Compile Include="Areas\ExternalAuthentication\Services\ExternalLoginException.cs" />
+    <Compile Include="Areas\ExternalAuthentication\Services\ExternalLoginService.cs" />
+    <Compile Include="Areas\ExternalAuthentication\Services\IExternalLoginService.cs" />
     <Compile Include="Areas\ExternalAuthentication\Models\OAuthToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -114,7 +115,7 @@
     <Content Include="Areas\Cdn\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Cdn\Views\CDN\Include.cshtml" />
+    <Content Include="Areas\Cdn\Views\Cdn\Include.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\ExternalAuthentication\Views\Account\LogOn.cshtml" />

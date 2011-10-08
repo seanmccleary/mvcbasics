@@ -21,16 +21,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace MVCBasics.Areas.ExternalAuthentication.Models
+namespace MVCBasics.Areas.ExternalAuthentication.Services
 {
-	public class OAuthToken
+	public class ExternalLoginException : Exception
 	{
-		public DateTime? Expires { get; set; }
+		public ExternalLoginException(string message) 
+			: base(message)
+		{
+		}
 
-		public string Token { get; set; }
-
-		public string Secret { get; set; }
-
-		public bool IsSession { get; set; }
+		public ExternalLoginException(string message, Exception innerException)
+			: base(message, innerException)
+		{
+		}
 	}
 }

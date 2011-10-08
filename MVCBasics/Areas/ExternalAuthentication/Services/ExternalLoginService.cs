@@ -1,20 +1,20 @@
 ﻿/*
  * Copyright 2011 Sean McCleary
  * 
- * This file is part of capt.
+ * This file is part of MVCBasics.
  *
- * capt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
+ * MVCBasics is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * capt is distributed in the hope that it will be useful,
+ * MVCBasics is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Affero General Public License
- * along with capt.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with MVCBasics.  If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
 using System.Text.RegularExpressions;
@@ -24,17 +24,17 @@ using DotNetOpenAuth.OpenId.RelyingParty;
 using Facebook;
 using System.Collections.Generic;
 using Twitterizer;
+using MVCBasics.Areas.ExternalAuthentication.Models;
 
-namespace MVCBasics.Areas.ExternalAuthentication.Models
+namespace MVCBasics.Areas.ExternalAuthentication.Services
 {
-	/// <summary>
-	/// TODO: Make some better exceptions to throw than ApplicationException
-	/// </summary>
+
+	/// <see cref="MVCBasics.Areas.ExternalAuthentication.Services.IExternalLoginService"/>
 	public class ExternalLoginService : IExternalLoginService
 	{
 
-		/// <see cref="Capt.Models.IExternalLoginService.GetOpenIdRedirectUrl" />
-		public string GetOpenIdRedirectUrl(string identifier, string receiveUrl, string returnUrl)
+		/// <see cref="MVCBasics.Areas.ExternalAuthentication.Services.IExternalLoginService.GetOpenIdRedirectUrl" />
+		public string GetOpenIdRedirectUrl(string identifier, string receiveUrl, string returnUrl, string realmUrl)
 		{
 
 			OpenIdRelyingParty openid = new OpenIdRelyingParty();
@@ -48,10 +48,13 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 				+ "?returnUrl=" + returnUrl
 				+ "&provider=" + ExternalLoginProvider.GenericOpenId);
 
-			string realmUrl =
-				sendBackUri.Scheme + "://"
-				+ sendBackUri.Host
-				+ (sendBackUri.IsDefaultPort ? "" : ":" + sendBackUri.Port);
+			if (String.IsNullOrWhiteSpace(realmUrl))
+			{
+				realmUrl =
+					sendBackUri.Scheme + "://"
+					+ sendBackUri.Host
+					+ (sendBackUri.IsDefaultPort ? "" : ":" + sendBackUri.Port);
+			}
 
 			Realm realm = new Realm(realmUrl);
 			var openidRequest = openid.CreateRequest(identifier, realm, sendBackUri);
@@ -59,7 +62,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 			return openidRequest.RedirectingResponse.Headers["Location"];
 		}
 
-		/// <see cref="Capt.Models.IExternalLoginService.GetOpenIdIdentifier"/>
+		/// <see cref="MVCBasics.Areas.ExternalAuthentication.Services.IExternalLoginService.GetOpenIdIdentifier"/>
 		public string GetOpenIdIdentifier(System.Web.HttpRequest request)
 		{
 			OpenIdRelyingParty openid = new OpenIdRelyingParty();
@@ -68,7 +71,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 
 			if ((response = openid.GetResponse(new HttpRequestInfo(request))) == null)
 			{
-				throw new ApplicationException("No OpenID response");
+				throw new ExternalLoginException("No OpenID response");
 			}
 
 			switch (response.Status)
@@ -77,18 +80,18 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 					return response.ClaimedIdentifier;
 
 				case AuthenticationStatus.Canceled:
-					throw new ApplicationException("Canceled at provider");
+					throw new ExternalLoginException("Canceled at provider");
 
 				case AuthenticationStatus.Failed:
-					throw response.Exception;
+					throw new ExternalLoginException("There was a problem logging in.", response.Exception);
 
 				default:
-					throw new ApplicationException("There was a problem logging in.");
+					throw new ExternalLoginException("There was a problem logging in.");
 			}
 
 		}
 
-		/// <see cref="Capt.Models.IExternalLoginService.GetFacebookRedirectUrl"/>
+		/// <see cref="MVCBasics.Areas.ExternalAuthentication.Services.IExternalLoginService.GetFacebookRedirectUrl"/>
 		public string GetFacebookRedirectUrl(string receiveUrl, string returnUrl,
 			string appId, string appSecret)
 		{
@@ -109,19 +112,19 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 
 		}
 
-		/// <see cref="Capt.Models.IExternalLoginService.GetFacebookId"/>
+		/// <see cref="MVCBasics.Areas.ExternalAuthentication.Services.IExternalLoginService.GetFacebookId"/>
 		public string GetFacebookId(System.Web.HttpRequest request, string receiveUrl, string appId, string appSecret,
 			out OAuthToken oauthToken)
 		{
 			FacebookOAuthResult oauthResult;
 			if (!FacebookOAuthResult.TryParse(request.Url, out oauthResult))
 			{
-				throw new ApplicationException("There was a problem logging in through Facebook!");
+				throw new ExternalLoginException("There was a problem logging in through Facebook!");
 			}
 
 			if (!oauthResult.IsSuccess)
 			{
-				throw new ApplicationException(oauthResult.ErrorDescription);
+				throw new ExternalLoginException(oauthResult.ErrorDescription);
 			}
 
 			var oAuthClient = new FacebookOAuthClient(FacebookApplication.Current);
@@ -153,7 +156,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 			return me.id;
 		}
 
-		/// <see cref="Capt.Models.IExternalLoginService.GetTwitterRedirectUrl"/>
+		/// <see cref="MVCBasics.Areas.ExternalAuthentication.Services.IExternalLoginService.GetTwitterRedirectUrl"/>
 		public string GetTwitterRedirectUrl(string receiveUrl, string returnUrl,
 			string consumerKey, string consumerSecret)
 		{
@@ -166,14 +169,14 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 			return "http://twitter.com/oauth/authenticate?oauth_token=" + requestToken.Token;
 		}
 
-		/// <see cref="Capt.Models.IExternalLoginService.GetTwitterId"/>
+		/// <see cref="MVCBasics.Areas.ExternalAuthentication.Services.IExternalLoginService.GetTwitterId"/>
 		public string GetTwitterId(System.Web.HttpRequest request, string consumerKey, string consumerSecret,
 			out OAuthToken oauthToken)
 		{
 
 			if (!String.IsNullOrWhiteSpace(request["denied"]))
 			{
-				throw new ApplicationException("Couldn't log you in via Twitter. (Did you deny access?)");
+				throw new ExternalLoginException("Couldn't log you in via Twitter. (Did you deny access?)");
 			}
 
 			OAuthTokenResponse tokens = OAuthUtility.GetAccessToken(consumerKey, consumerSecret,

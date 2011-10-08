@@ -1,6 +1,25 @@
-﻿using System;
+﻿/*
+ * Copyright 2011 Sean McCleary
+ * 
+ * This file is part of MVCBasics.
+ *
+ * MVCBasics is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * MVCBasics is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with MVCBasics.  If not, see <http://www.gnu.org/licenses/>.
+ */
+using System;
+using MVCBasics.Areas.ExternalAuthentication.Models;
 
-namespace MVCBasics.Areas.ExternalAuthentication.Models
+namespace MVCBasics.Areas.ExternalAuthentication.Services
 {
 	public interface IExternalLoginService
 	{
@@ -13,8 +32,9 @@ namespace MVCBasics.Areas.ExternalAuthentication.Models
 		/// <param name="identifier">His OpenID identifier</param>
 		/// <param name="request">The Request object used for this web request</param>
 		/// <param name="returnUrl">The URL the user should be redirected back to</param>
+		/// <param name="realmUrl">The OpenID realm. For www.yoursite.com you may want to set it to "yoursite.com"</param>
 		/// <returns>The URL he needs to visit to log in</returns>
-		string GetOpenIdRedirectUrl(string identifier, string receiveUrl, string returnUrl);
+		string GetOpenIdRedirectUrl(string identifier, string receiveUrl, string returnUrl, string realmUrl);
 
 		/// <summary>
 		/// Get the user's OpenID identifier from the response back from the external authenticating

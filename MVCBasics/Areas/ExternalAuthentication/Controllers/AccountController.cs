@@ -1,8 +1,27 @@
-﻿using System;
+﻿/*
+ * Copyright 2011 Sean McCleary
+ * 
+ * This file is part of MVCBasics.
+ *
+ * MVCBasics is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * MVCBasics is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with MVCBasics.  If not, see <http://www.gnu.org/licenses/>.
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MVCBasics.Areas.ExternalAuthentication.Services;
 using MVCBasics.Areas.ExternalAuthentication.Models;
 
 namespace MVCBasics.Areas.ExternalAuthentication.Controllers
@@ -59,7 +78,10 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 				// Are we doing OpenID here?
 				if (Request.Form["provider_type"] == "openid")
 				{
-					return Redirect(_captService.GetOpenIdRedirectUrl(Request.Form["openid_identifier"], receiveUrl, returnUrl));
+					string realm = System.Configuration.ConfigurationManager.AppSettings["OpenIdRealm"];
+
+					return Redirect(_captService.GetOpenIdRedirectUrl(Request.Form["openid_identifier"], receiveUrl, returnUrl, 
+						realm));
 				}
 
 				// How's about Facebook?
@@ -88,7 +110,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 				}
 
 				// That's odd.  How'd we get here?
-				throw new ApplicationException("Couldn't figure out what kind of login we're doing here!");
+				throw new ExternalLoginException("Couldn't figure out what kind of login we're doing here!");
 
 			}
 			catch (Exception ex)
@@ -164,7 +186,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 					default:
 
 						// Crud.  Couldn't figure out who's sending us back?
-						throw new ApplicationException("Couldn't figure out what kind of login we're doing here!");
+						throw new ExternalLoginException("Couldn't figure out what kind of login we're doing here!");
 				}
 
 				// Did we pick up an OAuth token in the process of logging our pal in?
