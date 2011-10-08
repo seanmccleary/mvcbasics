@@ -1,0 +1,37 @@
+﻿<script type="text/javascript">
+    $.get("@Url.Content("~/Areas/ExternalAuthentication/Content/openid.css")", function(response){
+       
+        if (!$('#openid_styles').length) 
+        {
+            $('head').append('<style id="openid_styles"></style>');
+        }
+
+        $('#openid_styles').text(response);
+
+        $(document).ready(function () {
+            openid.init('openid_identifier');
+        });
+    });
+</script>
+<script type="text/javascript" src="@Url.Content("~/Areas/ExternalAuthentication/Scripts/openid-jquery.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Areas/ExternalAuthentication/Scripts/openid-en.js")"></script>
+
+
+@Html.ValidationSummary(false, "Uh oh!")
+@using (Html.BeginForm("Authenticate", "Account", new { returnUrl = Request.QueryString["returnUrl"] }, FormMethod.Post, new { id = "openid_form" }))
+{
+    <div id="openid_choice">
+        <div id="openid_btns">
+        </div>
+    </div>
+    <div id="openid_input_area">
+        <input id="openid_submit" type="submit" value="Sign-In" />
+    </div>
+    <noscript>
+        <p>
+            OpenID is service that allows you to log-on to many different websites using a single
+            indentity. Find out <a href="http://openid.net/what/">more about OpenID</a> and
+            <a href="http://openid.net/get/">how to get an OpenID enabled account</a>.</p>
+    </noscript>
+
+}
