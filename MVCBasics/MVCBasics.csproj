@@ -77,6 +77,9 @@
     <Compile Include="Areas\Analytics\Controllers\AnalyticsController.cs" />
     <Compile Include="Areas\Cdn\CdnAreaRegistration.cs" />
     <Compile Include="Areas\Cdn\Controllers\CdnController.cs" />
+    <Compile Include="Areas\Errors\Controllers\ErrorController.cs" />
+    <Compile Include="Areas\Errors\ErrorHandler.cs" />
+    <Compile Include="Areas\Errors\ErrorsAreaRegistration.cs" />
     <Compile Include="Areas\ExternalAuthentication\Controllers\AccountController.cs" />
     <Compile Include="Areas\ExternalAuthentication\ExternalAuthenticationAreaRegistration.cs" />
     <Compile Include="Areas\ExternalAuthentication\Models\ExternalLoginProvider.cs" />
@@ -88,9 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Analytics\Models\" />
     <Folder Include="Areas\Analytics\Views\Shared\" />
-    <Folder Include="Areas\Cdn\Models\" />
     <Folder Include="Areas\Cdn\Views\Shared\" />
     <Folder Include="Areas\ExternalAuthentication\Views\Shared\" />
   </ItemGroup>
