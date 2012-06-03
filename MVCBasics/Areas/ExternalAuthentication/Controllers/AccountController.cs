@@ -35,7 +35,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 		/// <summary>
 		/// Our service layer!
 		/// </summary>
-		private IExternalLoginService _captService;
+		private IExternalLoginService _externalLoginService;
 
 		/// <summary>
 		/// What do we do when a user has been identified and needs to be logged in?
@@ -57,10 +57,10 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 		/// <summary>
 		/// Constructor that lets you specify your own service layer
 		/// </summary>
-		/// <param name="_captService">The service layer object you'd like to use</param>
+		/// <param name="_externalLoginService">The external login service you'd like to use</param>
 		public AccountController(IExternalLoginService loginService)
 		{
-			_captService = loginService;
+			_externalLoginService = loginService;
 		}
 
 		/// <summary>
@@ -69,7 +69,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 		/// <param name="returnUrl">The URL the user should be sent back to once he's logged in</param>
 		/// <returns></returns>
 		[ValidateInput(false)]
-		public ActionResult Authenticate(string returnUrl)
+		public virtual ActionResult Authenticate(string returnUrl)
 		{
 			try
 			{
@@ -80,7 +80,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 				{
 					string realm = System.Configuration.ConfigurationManager.AppSettings["OpenIdRealm"];
 
-					return Redirect(_captService.GetOpenIdRedirectUrl(Request.Form["openid_identifier"], receiveUrl, returnUrl, 
+					return Redirect(_externalLoginService.GetOpenIdRedirectUrl(Request.Form["openid_identifier"], receiveUrl, returnUrl, 
 						realm));
 				}
 
@@ -91,7 +91,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 					string appSecret = System.Configuration.ConfigurationManager.AppSettings["FacebookAppSecret"];
 
 					return Redirect(
-						_captService.GetFacebookRedirectUrl(
+						_externalLoginService.GetFacebookRedirectUrl(
 							Url.Action("ReceiveFacebookResponse", "Account", null, Request.Url.Scheme),
 							returnUrl,
 							appId,
@@ -105,7 +105,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 					string consumerSecret = System.Configuration.ConfigurationManager.AppSettings["TwitterConsumerSecret"];
 
 					return Redirect(
-						_captService.GetTwitterRedirectUrl(receiveUrl, returnUrl, consumerKey, consumerSecret)
+						_externalLoginService.GetTwitterRedirectUrl(receiveUrl, returnUrl, consumerKey, consumerSecret)
 					);
 				}
 
@@ -129,7 +129,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 		/// </summary>
 		/// <param name="state">The "state" that we sent to Facebook</param>
 		/// <returns></returns>
-		public ActionResult ReceiveFacebookResponse(string state, string code)
+		public virtual ActionResult ReceiveFacebookResponse(string state, string code)
 		{
 			System.Collections.Specialized.NameValueCollection nvc =
 				System.Web.HttpUtility.ParseQueryString(state);
@@ -145,7 +145,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 		/// <param name="returnUrl">The URL to which we should return the user at the end</param>
 		/// <param name="provider">The ID of the external provider (Facebook, Twitter, etc.)</param>
 		/// <returns></returns>
-		public ActionResult ReceiveResponse(string returnUrl, ExternalLoginProvider provider)
+		public virtual ActionResult ReceiveResponse(string returnUrl, ExternalLoginProvider provider)
 		{
 			try
 			{
@@ -157,7 +157,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 				{
 					case ExternalLoginProvider.GenericOpenId:
 
-						userId = _captService.GetOpenIdIdentifier(System.Web.HttpContext.Current.Request);
+						userId = _externalLoginService.GetOpenIdIdentifier(System.Web.HttpContext.Current.Request);
 						break;
 
 					case ExternalLoginProvider.Facebook:
@@ -165,7 +165,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 						string appId = System.Configuration.ConfigurationManager.AppSettings["FacebookAppId"];
 						string appSecret = System.Configuration.ConfigurationManager.AppSettings["FacebookAppSecret"];
 
-						userId = _captService.GetFacebookId(
+						userId = _externalLoginService.GetFacebookId(
 							System.Web.HttpContext.Current.Request,
 							Url.Action("ReceiveFacebookResponse", "Account", null, Request.Url.Scheme),
 							appId, appSecret,
@@ -177,7 +177,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 						string consumerKey = System.Configuration.ConfigurationManager.AppSettings["TwitterConsumerKey"];
 						string consumerSecret = System.Configuration.ConfigurationManager.AppSettings["TwitterConsumerSecret"];
 
-						userId = _captService.GetTwitterId(
+						userId = _externalLoginService.GetTwitterId(
 							System.Web.HttpContext.Current.Request,
 							consumerKey, consumerSecret, out oauthToken);
 
@@ -201,7 +201,7 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 				}
 				else
 				{
-					return RedirectToAction("Index", "PictureCaptions");
+					return Redirect("/");
 				}
 
 			}
@@ -210,21 +210,6 @@ namespace MVCBasics.Areas.ExternalAuthentication.Controllers
 				ModelState.AddModelError("Message", e.Message);
 				return View("LogOn");
 			}
-		}
-
-		/// <summary>
-		/// This unexciting action pretty much just displays the login page.
-		/// </summary>
-		/// <returns></returns>
-		public ActionResult LogOn()
-		{
-			if (Request.IsAuthenticated)
-			{
-				// User's already logged in?
-				return Redirect("/");
-			}
-
-			return View();
 		}
     }
 }

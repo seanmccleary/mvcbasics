@@ -91,9 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Analytics\Views\Shared\" />
-    <Folder Include="Areas\Cdn\Views\Shared\" />
-    <Folder Include="Areas\ExternalAuthentication\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\ExternalAuthentication\Content\images\openid-inputicon.gif" />

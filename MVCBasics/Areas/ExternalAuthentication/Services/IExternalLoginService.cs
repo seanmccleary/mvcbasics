@@ -36,6 +36,8 @@ namespace MVCBasics.Areas.ExternalAuthentication.Services
 		/// <returns>The URL he needs to visit to log in</returns>
 		string GetOpenIdRedirectUrl(string identifier, string receiveUrl, string returnUrl, string realmUrl);
 
+		string GetOpenIdRedirectUrl(string identifier, string receiveUrl, string returnUrl, string realmUrl, bool isWeb);
+
 		/// <summary>
 		/// Get the user's OpenID identifier from the response back from the external authenticating
 		/// server

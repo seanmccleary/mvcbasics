@@ -33,11 +33,26 @@ namespace MVCBasics.Areas.ExternalAuthentication.Services
 	public class ExternalLoginService : IExternalLoginService
 	{
 
-		/// <see cref="MVCBasics.Areas.ExternalAuthentication.Services.IExternalLoginService.GetOpenIdRedirectUrl" />
 		public string GetOpenIdRedirectUrl(string identifier, string receiveUrl, string returnUrl, string realmUrl)
 		{
+			return GetOpenIdRedirectUrl(identifier, receiveUrl, returnUrl, realmUrl, true);
+		}
 
-			OpenIdRelyingParty openid = new OpenIdRelyingParty();
+		/// <see cref="MVCBasics.Areas.ExternalAuthentication.Services.IExternalLoginService.GetOpenIdRedirectUrl" />
+		public string GetOpenIdRedirectUrl(string identifier, string receiveUrl, string returnUrl, string realmUrl, bool isWeb)
+		{
+
+			OpenIdRelyingParty openid;
+
+			if (!isWeb)
+			{
+				openid = new OpenIdRelyingParty(null);
+			}
+			else
+			{
+				openid = new OpenIdRelyingParty();
+			}
+
 			Identifier id;
 			Identifier.TryParse(identifier, out id);
 
