@@ -1,1 +1,45 @@
-Latest information at http://www.seanmccleary.info/projects/mvcbasics
+# Sean's MVC Basics #
+
+**NOTE: This might be rather outdated by now, but I'm keeping it here just in case it's useful to anyone, or I need to plunder it later.**
+
+## What Is It? ##
+
+Ever find yourself laying the same basic groundwork into each new website you start?  Sure you have.  And so did Sean.  Thus he one day ripped it all out and slapped it into a new ASP.NET MVC 3 project (with Razor!). 
+
+Using it is simple.  Just compile, drop the DLLs into your bin directory, copy or merge the Areas into your website, and then decide which of the areas you'd like to use:
+
+## 1. Anaytics ##
+
+Google Analtyics?  Google Webmaster Tools?  You use those?  Sure you do.  How about Bing Webmaster tools?  Ever heard of a little thing called Yahoo Site Explorer??
+
+[See how to set it up](analytics).
+
+## 2. CDN-hosted JavaScript ##
+
+Microsoft hosts all that JavaScript you're using on their CDN.  I know it, you know.  So why does Visual Studio, by default, point to your self-hosted JavaScript files, usin' up your bandwith like a sap??
+
+Well I don't have a good answer to that, friend, but Sean's MVC Basics will let you easily toggle between using JavaScript on your own server (which you might wanna do for development) or that blazing-fast Microsoft CDN.
+
+[See how to set it up](cdn).
+
+## 3. OpenID & OAuth Logins ##
+
+That we've made it all the way to the year 2011 and websites still make you create yet another username and remember yet another password is a crime and a shame.  And that a newly-created ASP.NET MVC 3 project in Visual Studio templates up one of these antiquated login pages for you as if that were helpful or something is just... oh I have to calm down.
+
+The ExternalAuthentication area of Sean's MVC Basics is a drop-in replacement for that monstrosity, replacing the login page with a nice, attracttive one based on openid-selector, expanded to include Facebook and Twitter logins.
+
+[See how to set it up](external authentication).
+
+## 4. Error Handling ##
+
+MVC3 adds some nifty error handling features, with their global filters and what-not.  But those only catch errors that occur within the execution of a controller.  And what about 404's?  Those might definitely occur outside the execution of any controller (because the requestd page doesn't exist!)  Microsoft still expects us to use redirects specified in Web.config to handle 404s? Sucks! Search engines don't get that 404 HTTP response code from the requested URL!
+
+[See how to set up something better](error handling).
+
+## License ##
+
+Sean's MVC Basics is bestowed unto you in accordance with the terms set for of the [GNU Lesser General Public License](http://www.gnu.org/licenses/lgpl.html), so go nuts, friends, just go nuts.
+
+## Contact ##
+
+You can contact me here if you have any questions or problems.  I'd also love to hear about it if you find MVC Basics useful, or would like to contribute features or bugfixes.
